@@ -20,10 +20,13 @@ class Network(object):
         for k in range(self.num_layers):
             x = self.layer_list[k].forward(x)
 
-        self.loss = loss.forward(x, label_placeholder)#crossEntropy
+        self.loss = loss.forward(x, label_placeholder)
         self.updates = optimizer.get_updates(self.loss, self.params)
         self.accuracy = T.mean(T.eq(T.argmax(x, axis=-1),
                                T.argmax(label_placeholder, axis=-1)))
+        self.equation_accuracy = T.all(T.eq(T.argmax(x, axis=-1),
+                                       T.argmax(label_placeholder, axis=-1)))
+
         LOG_INFO('start compiling model...')
         self.train = theano.function(
             inputs=[input_placeholder, label_placeholder],
@@ -33,7 +36,7 @@ class Network(object):
 
         self.test = theano.function(
             inputs=[input_placeholder, label_placeholder],
-            outputs=[self.accuracy, self.loss],
+            outputs=[self.accuracy, self.equation_accuracy, self.loss],
             allow_input_downcast=True)
 
         self.predict = theano.function(
