@@ -12,6 +12,3 @@ Run run_*.py file can reproduce the results in the Report.
 
 Any question, contact me at mcz13@mails.tsinghua.edu.cn
 
-Best wishes!
-
-Chengzhi Mao
